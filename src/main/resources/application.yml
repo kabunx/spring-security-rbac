@@ -1,0 +1,37 @@
+server:
+  error:
+    whitelabel:
+      enabled: true
+  port: 8090
+  servlet:
+    encoding:
+      force: true
+
+spring:
+  datasource:
+    name: career_work
+    url: jdbc:mysql://127.0.0.1:3306/career_work?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+  messages:
+    always-use-message-format: false
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: true
+    use-code-as-default-message: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  profiles:
+    active: "@spring.profiles.active@"
+
+app:
+  jwt:
+    access-token-expire-time: 300000
+    header: Authorization
+    prefix: "Bearer "
+    refresh-token-expire-time: 2592000000
