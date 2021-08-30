@@ -267,4 +267,8 @@
                 fetchType="lazy"
         />
     </resultMap>
+    <insert id="insertRole">
+        insert into user_role (user_id, role_id, created_at)
+        values (#{param1.id,jdbcType=BIGINT}, #{param2.id}, jdbcType = BIGINT), #{param3,jdbcType=TIMESTAMP})
+    </insert>
 </mapper>

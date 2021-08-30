@@ -228,4 +228,20 @@ public class User implements UserDetails {
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
     }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
 }

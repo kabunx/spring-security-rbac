@@ -211,7 +211,7 @@
   <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select p.*
     from permission p
-        join user_permission up
+        inner join user_permission up
             on p.id = up.permission_id
     where up.user_id = #{userId,jdbcType=BIGINT}
   </select>

@@ -8,12 +8,12 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
-  <sql id="Base_Column_List">
+  <sql id="AllColumnList">
     id, `name`, description, created_at, updated_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
+    <include refid="AllColumnList" />
     from role
     where id = #{id,jdbcType=BIGINT}
   </select>
