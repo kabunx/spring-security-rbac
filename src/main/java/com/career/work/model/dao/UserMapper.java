@@ -13,6 +13,8 @@ public interface UserMapper {
 
     User selectByUsername(String username);
 
+    User selectByUsernameWithPermissions(String username);
+
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);

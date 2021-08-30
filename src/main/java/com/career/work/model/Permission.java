@@ -1,8 +1,11 @@
 package com.career.work.model;
 
-import java.util.Date;
+import org.springframework.security.core.GrantedAuthority;
 
-public class Permission {
+import java.util.Date;
+import java.util.List;
+
+public class Permission implements GrantedAuthority {
     private Long id;
 
     private String name;
@@ -12,6 +15,15 @@ public class Permission {
     private Date createdAt;
 
     private Date updatedAt;
+
+    private List<User> users;
+
+    private List<Role> roles;
+
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 
     public Long getId() {
         return id;

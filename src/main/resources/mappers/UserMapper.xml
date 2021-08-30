@@ -1,254 +1,270 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.career.work.model.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.career.work.model.User">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="sex" jdbcType="TINYINT" property="sex" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="phone" jdbcType="CHAR" property="phone" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="password_expired_at" jdbcType="TIMESTAMP" property="passwordExpiredAt" />
-    <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="enabled_at" jdbcType="TIMESTAMP" property="enabledAt" />
-    <result column="expired_at" jdbcType="TIMESTAMP" property="expiredAt" />
-    <result column="locked_at" jdbcType="TIMESTAMP" property="lockedAt" />
-    <result column="remember_token" jdbcType="VARCHAR" property="rememberToken" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-    <result column="deleted_at" jdbcType="TIMESTAMP" property="deletedAt" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, username, email, `name`, sex, avatar, phone, `status`, `password`, password_expired_at,
+    <resultMap id="BaseResultMap" type="com.career.work.model.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="password_expired_at" jdbcType="TIMESTAMP" property="passwordExpiredAt"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="enabled_at" jdbcType="TIMESTAMP" property="enabledAt"/>
+        <result column="expired_at" jdbcType="TIMESTAMP" property="expiredAt"/>
+        <result column="locked_at" jdbcType="TIMESTAMP" property="lockedAt"/>
+        <result column="remember_token" jdbcType="VARCHAR" property="rememberToken"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+        <result column="deleted_at" jdbcType="TIMESTAMP" property="deletedAt"/>
+    </resultMap>
+    <sql id="AllColumnList">
+        id
+        , username, email, `name`, sex, avatar, phone, `status`, `password`, password_expired_at,
     `source`, enabled_at, expired_at, locked_at, remember_token, created_at, updated_at, 
     deleted_at
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.career.work.model.User">
-    insert into user (id, username, email,
-      `name`, sex, avatar,
-      phone, `status`, `password`,
-      password_expired_at, `source`, enabled_at,
-      expired_at, locked_at, remember_token,
-      created_at, updated_at, deleted_at
-      )
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
-      #{name,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR},
-      #{phone,jdbcType=CHAR}, #{status,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{passwordExpiredAt,jdbcType=TIMESTAMP}, #{source,jdbcType=VARCHAR}, #{enabledAt,jdbcType=TIMESTAMP},
-      #{expiredAt,jdbcType=TIMESTAMP}, #{lockedAt,jdbcType=TIMESTAMP}, #{rememberToken,jdbcType=VARCHAR},
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{deletedAt,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.career.work.model.User">
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="username != null">
-        username,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="avatar != null">
-        avatar,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="password != null">
-        `password`,
-      </if>
-      <if test="passwordExpiredAt != null">
-        password_expired_at,
-      </if>
-      <if test="source != null">
-        `source`,
-      </if>
-      <if test="enabledAt != null">
-        enabled_at,
-      </if>
-      <if test="expiredAt != null">
-        expired_at,
-      </if>
-      <if test="lockedAt != null">
-        locked_at,
-      </if>
-      <if test="rememberToken != null">
-        remember_token,
-      </if>
-      <if test="createdAt != null">
-        created_at,
-      </if>
-      <if test="updatedAt != null">
-        updated_at,
-      </if>
-      <if test="deletedAt != null">
-        deleted_at,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=TINYINT},
-      </if>
-      <if test="avatar != null">
-        #{avatar,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="passwordExpiredAt != null">
-        #{passwordExpiredAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="source != null">
-        #{source,jdbcType=VARCHAR},
-      </if>
-      <if test="enabledAt != null">
-        #{enabledAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="expiredAt != null">
-        #{expiredAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lockedAt != null">
-        #{lockedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="rememberToken != null">
-        #{rememberToken,jdbcType=VARCHAR},
-      </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deletedAt != null">
-        #{deletedAt,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.career.work.model.User">
-    update user
-    <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=TINYINT},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        `password` = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="passwordExpiredAt != null">
-        password_expired_at = #{passwordExpiredAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="source != null">
-        `source` = #{source,jdbcType=VARCHAR},
-      </if>
-      <if test="enabledAt != null">
-        enabled_at = #{enabledAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="expiredAt != null">
-        expired_at = #{expiredAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lockedAt != null">
-        locked_at = #{lockedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="rememberToken != null">
-        remember_token = #{rememberToken,jdbcType=VARCHAR},
-      </if>
-      <if test="createdAt != null">
-        created_at = #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedAt != null">
-        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deletedAt != null">
-        deleted_at = #{deletedAt,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.career.work.model.User">
-    update user
-    set username = #{username,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      `name` = #{name,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=TINYINT},
-      avatar = #{avatar,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=CHAR},
-      `status` = #{status,jdbcType=VARCHAR},
-      `password` = #{password,jdbcType=VARCHAR},
-      password_expired_at = #{passwordExpiredAt,jdbcType=TIMESTAMP},
-      `source` = #{source,jdbcType=VARCHAR},
-      enabled_at = #{enabledAt,jdbcType=TIMESTAMP},
-      expired_at = #{expiredAt,jdbcType=TIMESTAMP},
-      locked_at = #{lockedAt,jdbcType=TIMESTAMP},
-      remember_token = #{rememberToken,jdbcType=VARCHAR},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-      deleted_at = #{deletedAt,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-    where username = #{username,jdbcType=VARCHAR}
-  </select>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="AllColumnList"/>
+        from user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.career.work.model.User">
+        insert into user (id, username, email,
+                          `name`, sex, avatar,
+                          phone, `status`, `password`,
+                          password_expired_at, `source`, enabled_at,
+                          expired_at, locked_at, remember_token,
+                          created_at, updated_at, deleted_at)
+        values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR},
+                #{phone,jdbcType=CHAR}, #{status,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+                #{passwordExpiredAt,jdbcType=TIMESTAMP}, #{source,jdbcType=VARCHAR}, #{enabledAt,jdbcType=TIMESTAMP},
+                #{expiredAt,jdbcType=TIMESTAMP}, #{lockedAt,jdbcType=TIMESTAMP}, #{rememberToken,jdbcType=VARCHAR},
+                #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{deletedAt,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.career.work.model.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="passwordExpiredAt != null">
+                password_expired_at,
+            </if>
+            <if test="source != null">
+                `source`,
+            </if>
+            <if test="enabledAt != null">
+                enabled_at,
+            </if>
+            <if test="expiredAt != null">
+                expired_at,
+            </if>
+            <if test="lockedAt != null">
+                locked_at,
+            </if>
+            <if test="rememberToken != null">
+                remember_token,
+            </if>
+            <if test="createdAt != null">
+                created_at,
+            </if>
+            <if test="updatedAt != null">
+                updated_at,
+            </if>
+            <if test="deletedAt != null">
+                deleted_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="passwordExpiredAt != null">
+                #{passwordExpiredAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="enabledAt != null">
+                #{enabledAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expiredAt != null">
+                #{expiredAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lockedAt != null">
+                #{lockedAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rememberToken != null">
+                #{rememberToken,jdbcType=VARCHAR},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedAt != null">
+                #{updatedAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletedAt != null">
+                #{deletedAt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.career.work.model.User">
+        update user
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                `password` = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="passwordExpiredAt != null">
+                password_expired_at = #{passwordExpiredAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="source != null">
+                `source` = #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="enabledAt != null">
+                enabled_at = #{enabledAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expiredAt != null">
+                expired_at = #{expiredAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lockedAt != null">
+                locked_at = #{lockedAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rememberToken != null">
+                remember_token = #{rememberToken,jdbcType=VARCHAR},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deletedAt != null">
+                deleted_at = #{deletedAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.career.work.model.User">
+        update user
+        set username            = #{username,jdbcType=VARCHAR},
+            email               = #{email,jdbcType=VARCHAR},
+            `name`              = #{name,jdbcType=VARCHAR},
+            sex                 = #{sex,jdbcType=TINYINT},
+            avatar              = #{avatar,jdbcType=VARCHAR},
+            phone               = #{phone,jdbcType=CHAR},
+            `status`            = #{status,jdbcType=VARCHAR},
+            `password`          = #{password,jdbcType=VARCHAR},
+            password_expired_at = #{passwordExpiredAt,jdbcType=TIMESTAMP},
+            `source`            = #{source,jdbcType=VARCHAR},
+            enabled_at          = #{enabledAt,jdbcType=TIMESTAMP},
+            expired_at          = #{expiredAt,jdbcType=TIMESTAMP},
+            locked_at           = #{lockedAt,jdbcType=TIMESTAMP},
+            remember_token      = #{rememberToken,jdbcType=VARCHAR},
+            created_at          = #{createdAt,jdbcType=TIMESTAMP},
+            updated_at          = #{updatedAt,jdbcType=TIMESTAMP},
+            deleted_at          = #{deletedAt,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="AllColumnList"/>
+        from user
+        where username = #{username,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByUsernameWithPermissions" parameterType="java.lang.String" resultMap="WithPermissionsMap">
+        select
+        <include refid="AllColumnList"/>
+        from user
+        where username = #{username,jdbcType=VARCHAR}
+    </select>
+    <resultMap id="WithPermissionsMap" type="com.career.work.model.User" extends="BaseResultMap">
+        <!-- 嵌入的select查询方式，查询当前用户的权限|N+1问题。 -->
+        <collection
+                property="permissions"
+                ofType="com.career.work.model.Permission"
+                select="com.career.work.model.dao.PermissionMapper.selectByUserId"
+                column="id"
+                fetchType="lazy"
+        />
+    </resultMap>
 </mapper>

@@ -29,9 +29,6 @@ spring:
   profiles:
     active: "@spring.profiles.active@"
 
-app:
-  jwt:
-    access-token-expire-time: 300000
-    header: Authorization
-    prefix: "Bearer "
-    refresh-token-expire-time: 2592000000
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
