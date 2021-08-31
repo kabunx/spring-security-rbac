@@ -1,4 +1,4 @@
-package com.career.work.service;
+package com.career.work.security.userdetails;
 
 import com.career.work.model.Permission;
 import com.career.work.model.Role;
@@ -6,13 +6,11 @@ import com.career.work.model.User;
 import com.career.work.model.dao.PermissionMapper;
 import com.career.work.model.dao.RoleMapper;
 import com.career.work.model.dao.UserMapper;
-import com.career.work.service.contract.AuthServiceInterface;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -21,8 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
-public class AuthService implements AuthServiceInterface, UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final String ROLE_PREFIX = "ROLE_";
 

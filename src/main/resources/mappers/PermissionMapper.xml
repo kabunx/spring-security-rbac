@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.career.work.model.dao.PermissionMapper">
   <resultMap id="BaseResultMap" type="com.career.work.model.Permission">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,17 +67,18 @@
     </where>
   </sql>
   <sql id="AllColumns">
-    id, `name`, description, created_at, updated_at
+    id
+    , `name`, description, created_at, updated_at
   </sql>
   <select id="selectByExample" parameterType="com.career.work.model.PermissionExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
-    <include refid="AllColumns" />
+    <include refid="AllColumns"/>
     from permission
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -85,25 +86,26 @@
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
-    <include refid="AllColumns" />
+    <include refid="AllColumns"/>
     from permission
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from permission
+    delete
+    from permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.career.work.model.PermissionExample">
     delete from permission
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
   </delete>
   <insert id="insert" parameterType="com.career.work.model.Permission">
     insert into permission (id, `name`, description,
-      created_at, updated_at)
+                            created_at, updated_at)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+            #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.career.work.model.Permission">
     insert into permission
@@ -145,7 +147,7 @@
   <select id="countByExample" parameterType="com.career.work.model.PermissionExample" resultType="java.lang.Long">
     select count(*) from permission
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
+      <include refid="Example_Where_Clause"/>
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
@@ -168,18 +170,18 @@
       </if>
     </set>
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
     update permission
     set id = #{record.id,jdbcType=BIGINT},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      description = #{record.description,jdbcType=VARCHAR},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    `name` = #{record.name,jdbcType=VARCHAR},
+    description = #{record.description,jdbcType=VARCHAR},
+    created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+    updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
+      <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.career.work.model.Permission">
@@ -202,17 +204,16 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.career.work.model.Permission">
     update permission
-    set `name` = #{name,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    set `name`      = #{name,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        created_at  = #{createdAt,jdbcType=TIMESTAMP},
+        updated_at  = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select p.*
     from permission p
-        inner join user_permission up
-            on p.id = up.permission_id
+           inner join user_permission up on p.id = up.permission_id
     where up.user_id = #{userId,jdbcType=BIGINT}
   </select>
 
@@ -224,22 +225,20 @@
     where rp.role_id = #{roleId,jdbcType=BIGINT}
   </select>
   <select id="selectByUserIds" parameterType="java.util.List" resultMap="WithUserIdMap">
-    select
-           p.* , up.user_id user_id
+    select p.*, up.user_id user_id
     from permission p
            inner join user_permission up
                       on p.id = up.permission_id
     where up.user_id in #{userIds}
   </select>
   <resultMap id="WithUserIdMap" type="com.career.work.model.Permission" extends="BaseResultMap">
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId"/>
   </resultMap>
   <select id="selectByRoleIds" parameterType="java.util.List" resultMap="BaseResultMap">
     select
-      <include refid="AllColumns"></include>
+    <include refid="AllColumns"></include>
     from permission p
-           inner join role_permission rp
-                      on p.id = rp.permission_id
+    inner join role_permission rp on p.id = rp.permission_id
     where rp.role_id in #{roleIds}
   </select>
 </mapper>
