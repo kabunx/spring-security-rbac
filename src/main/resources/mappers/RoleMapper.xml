@@ -90,4 +90,17 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectWithPermissionsByPrimaryKey" parameterType="java.lang.Long">
+    select * from role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <resultMap id="WithPermissionsMap" type="com.career.work.model.Role" extends="BaseResultMap">
+    <collection
+            property="permissions"
+            ofType="com.career.work.model.Permission"
+            select="com.career.work.model.dao.PermissionMapper.selectByRoleId"
+            column="id"
+            fetchType="lazy"
+    />
+  </resultMap>
 </mapper>

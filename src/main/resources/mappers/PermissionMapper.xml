@@ -215,4 +215,12 @@
             on p.id = up.permission_id
     where up.user_id = #{userId,jdbcType=BIGINT}
   </select>
+
+  <select id="selectByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select p.*
+    from permission p
+           inner join role_permission rp
+                      on p.id = rp.permission_id
+    where rp.role_id = #{roleId,jdbcType=BIGINT}
+  </select>
 </mapper>

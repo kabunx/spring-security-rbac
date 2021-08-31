@@ -20,6 +20,8 @@ public interface PermissionMapper {
 
     List<Permission> selectByUserId(Long id);
 
+    List<Permission> selectByRoleId(Long id);
+
     Permission selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Permission record, @Param("example") PermissionExample example);
