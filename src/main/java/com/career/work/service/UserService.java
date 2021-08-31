@@ -19,7 +19,7 @@ public class UserService {
     @Resource
     PermissionMapper permissionMapper;
 
-    public List<User> getByIds(List<Long> ids) {
+    public List<User> getWithPermissionsByIds(List<Long> ids) {
         List<User> users = userMapper.selectByIds(ids);
         List<Permission> permissions = permissionMapper.selectByUserIds(ids);
         users.forEach(user -> {

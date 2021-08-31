@@ -2,7 +2,9 @@ package com.career.work.model.dao;
 
 import com.career.work.model.Permission;
 import com.career.work.model.PermissionExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface PermissionMapper {
@@ -23,6 +25,8 @@ public interface PermissionMapper {
     List<Permission> selectByUserIds(List<Long> ids);
 
     List<Permission> selectByRoleId(Long id);
+
+    List<Permission> selectByRoleIds(List<Long> roleIds);
 
     Permission selectByPrimaryKey(Long id);
 

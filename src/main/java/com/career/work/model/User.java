@@ -48,6 +48,8 @@ public class User implements UserDetails {
 
     private List<Permission> permissions;
 
+    private List<GrantedAuthority> authorities;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return permissions;
@@ -243,5 +245,9 @@ public class User implements UserDetails {
 
     public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
+    }
+
+    public void setAuthorities(List<GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 }

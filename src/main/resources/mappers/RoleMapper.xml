@@ -12,7 +12,7 @@
     id, `name`, description, created_at, updated_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="AllColumnList" />
     from role
     where id = #{id,jdbcType=BIGINT}
@@ -22,9 +22,9 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.career.work.model.Role">
-    insert into role (id, `name`, description, 
+    insert into role (id, `name`, description,
       created_at, updated_at)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.career.work.model.Role">
@@ -90,9 +90,24 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectWithPermissionsByPrimaryKey" parameterType="java.lang.Long">
-    select * from role
+  <select id="selectWithPermissionsByPrimaryKey" parameterType="java.lang.Long" resultMap="WithPermissionsMap">
+    select
+      <include refid="AllColumnList" />
+    from role
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="AllColumnList" />
+    from role r
+        inner join user_role ur on r.id = ur.role_id
+    where ur.user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <select id="selectWithPermissionsByIds" parameterType="java.util.List" resultMap="WithPermissionsMap">
+    select
+      <include refid="AllColumnList" />
+    from role
+    where id in #{ids}
   </select>
   <resultMap id="WithPermissionsMap" type="com.career.work.model.Role" extends="BaseResultMap">
     <collection
@@ -103,7 +118,4 @@
             fetchType="lazy"
     />
   </resultMap>
-  <select id="selectWithPermissionsByIds" >
-
-  </select>
 </mapper>

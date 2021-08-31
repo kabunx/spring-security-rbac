@@ -9,10 +9,10 @@ public class PermissionExample {
 
     protected boolean distinct;
 
-    protected List<Criteria> oredCriteria;
+    protected List<Criteria> criteriaList;
 
     public PermissionExample() {
-        oredCriteria = new ArrayList<>();
+        criteriaList = new ArrayList<>();
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -31,35 +31,34 @@ public class PermissionExample {
         return distinct;
     }
 
-    public List<Criteria> getOredCriteria() {
-        return oredCriteria;
+    public List<Criteria> getCriteriaList() {
+        return criteriaList;
     }
 
     public void or(Criteria criteria) {
-        oredCriteria.add(criteria);
+        criteriaList.add(criteria);
     }
 
     public Criteria or() {
         Criteria criteria = createCriteriaInternal();
-        oredCriteria.add(criteria);
+        criteriaList.add(criteria);
         return criteria;
     }
 
     public Criteria createCriteria() {
         Criteria criteria = createCriteriaInternal();
-        if (oredCriteria.size() == 0) {
-            oredCriteria.add(criteria);
+        if (criteriaList.size() == 0) {
+            criteriaList.add(criteria);
         }
         return criteria;
     }
 
     protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
+        return new Criteria();
     }
 
     public void clear() {
-        oredCriteria.clear();
+        criteriaList.clear();
         orderByClause = null;
         distinct = false;
     }
