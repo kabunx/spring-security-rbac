@@ -16,6 +16,8 @@ public class Permission implements GrantedAuthority {
 
     private Date updatedAt;
 
+    private Long userId;
+
     private List<User> users;
 
     private List<Role> roles;
@@ -63,5 +65,29 @@ public class Permission implements GrantedAuthority {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

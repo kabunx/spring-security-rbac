@@ -20,6 +20,8 @@ public interface PermissionMapper {
 
     List<Permission> selectByUserId(Long id);
 
+    List<Permission> selectByUserIds(List<Long> ids);
+
     List<Permission> selectByRoleId(Long id);
 
     Permission selectByPrimaryKey(Long id);

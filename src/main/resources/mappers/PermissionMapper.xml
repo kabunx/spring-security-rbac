@@ -223,4 +223,15 @@
                       on p.id = rp.permission_id
     where rp.role_id = #{roleId,jdbcType=BIGINT}
   </select>
+  <select id="selectByUserIds" parameterType="java.util.List" resultMap="WithUserIdMap">
+    select
+           p.* , up.user_id user_id
+    from permission p
+           inner join user_permission up
+                      on p.id = up.permission_id
+    where up.user_id in #{userIds}
+  </select>
+  <resultMap id="WithUserIdMap" type="com.career.work.model.Permission" extends="BaseResultMap">
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
 </mapper>

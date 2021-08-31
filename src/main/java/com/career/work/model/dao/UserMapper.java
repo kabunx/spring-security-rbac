@@ -2,8 +2,10 @@ package com.career.work.model.dao;
 
 import com.career.work.model.Role;
 import com.career.work.model.User;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.Date;
+import java.util.List;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
@@ -19,6 +21,8 @@ public interface UserMapper {
     User selectByUsername(String username);
 
     User selectByUsernameWithPermissions(String username);
+
+    List<User> selectByIds(List<Long> ids);
 
     int updateByPrimaryKeySelective(User record);
 

@@ -103,4 +103,7 @@
             fetchType="lazy"
     />
   </resultMap>
+  <select id="selectWithPermissionsByIds" >
+
+  </select>
 </mapper>
