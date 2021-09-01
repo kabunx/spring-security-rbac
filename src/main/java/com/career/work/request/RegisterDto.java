@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
-public class AuthRequest implements Serializable {
+public class RegisterDto implements Serializable {
     @NotNull
     @NotBlank(message = "用户名不能为空")
     @CareerUsername

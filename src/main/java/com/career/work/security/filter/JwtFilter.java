@@ -1,13 +1,13 @@
-package com.career.work.security.jwt;
+package com.career.work.security.filter;
 
-import com.career.work.utils.JwtUtils;
+import com.career.work.util.JwtUtils;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,11 +17,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class JwtFilter extends OncePerRequestFilter {
+
+    @Resource
+    JwtUtils jwtUtils;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //
-        if (checkJwtRequest(request)) {
-            validateJwt(request)
+        if (isJwtRequest(request)) {
+            validateAndParseJwt(request)
                     .filter(claims -> claims.get("authorities") != null)
                     .ifPresent(claims -> {
                         // 解析jwt中的用户信息，处理后赋值给Security
@@ -41,24 +44,19 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private Optional<Claims> validateJwt(HttpServletRequest request) {
-        try {
-            String jwt = request.getHeader(JwtUtils.header).replace(JwtUtils.prefix, "");
-            return Optional.of(
-                    Jwts.parserBuilder().setSigningKey(JwtUtils.key).build().parseClaimsJws(jwt).getBody()
-            );
-        } catch (RuntimeException e) {
-            return Optional.empty();
-        }
+    private Optional<Claims> validateAndParseJwt(HttpServletRequest request) {
+        return jwtUtils.parseClaims(
+                request.getHeader(JwtUtils.header).replace(JwtUtils.tokenPrefix, "")
+        );
     }
 
     /**
      * @param request HTTP请求
      * @return 是否包含JWT Headers
      */
-    private boolean checkJwtRequest(HttpServletRequest request) {
+    private boolean isJwtRequest(HttpServletRequest request) {
         String authHeader = request.getHeader(JwtUtils.header);
-        return authHeader != null && authHeader.startsWith(JwtUtils.prefix);
+        return authHeader != null && authHeader.startsWith(JwtUtils.tokenPrefix);
     }
 
 

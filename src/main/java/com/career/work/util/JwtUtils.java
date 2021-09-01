@@ -1,4 +1,4 @@
-package com.career.work.utils;
+package com.career.work.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Min;
 import java.security.Key;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
+
+    public static final String claimName = "user";
 
     // 用于签名 Access Token
     public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
@@ -27,61 +28,53 @@ public class JwtUtils {
     public static final String header = "Authorization";
 
     // HTTP 报头的认证字段的值的前缀
-    public static final String prefix = "Bearer ";
+    public static final String tokenPrefix = "Bearer ";
 
     // Access Token 过期时间
     @Min(5000L)
-    public final long accessTokenExpireTime = 60 * 1000L;
+    public static final long accessTokenExpireTime = 60 * 1000L;
 
     // Refresh Token 过期时间
     @Min(3600000L)
-    public final long refreshTokenExpireTime = 30 * 24 * 3600 * 1000L;
+    public static final long refreshTokenExpireTime = 30 * 24 * 3600 * 1000L;
 
-    public String generateJwtToken(UserDetails userDetails) {
-        return generateJwtToken(userDetails, accessTokenExpireTime);
+    public String generateAccessToken(UserDetails userDetails) {
+        return generateAccessToken(userDetails, accessTokenExpireTime);
     }
 
-    public String generateJwtToken(UserDetails userDetails, long timeToExpire) {
-        return generateJwtToken(userDetails, timeToExpire, key);
+    public String generateAccessToken(UserDetails userDetails, long timeToExpire) {
+        return generateAccessToken(userDetails, timeToExpire, key);
     }
 
-    public String generateJwtToken(UserDetails userDetails, long timeToExpire, Key signKey) {
+    public String generateAccessToken(UserDetails userDetails, long timeToExpire, Key signKey) {
         long now = System.currentTimeMillis();
 
         return Jwts
                 .builder()
                 .setId("kabunx")
                 .setSubject(userDetails.getUsername())
-                .claim("user", userDetails)
+                .claim(claimName, userDetails)
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + timeToExpire))
                 .signWith(signKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
-        return generateJwtToken(userDetails, refreshTokenExpireTime, refreshKey);
+    public String generateRefreshAccessToken(UserDetails userDetails) {
+        return generateAccessToken(userDetails, refreshTokenExpireTime, refreshKey);
     }
 
     public boolean validateAccessToken(String jwtToken) {
         return validateToken(jwtToken, key);
     }
 
-    public boolean validateRefreshToken(String jwtToken) {
+    public boolean validateRefreshAccessToken(String jwtToken) {
         return validateToken(jwtToken, refreshKey);
     }
 
     public boolean validateToken(String jwtToken, Key signKey) {
-        try {
-            Jwts
-                    .parserBuilder()
-                    .setSigningKey(signKey)
-                    .build()
-                    .parseClaimsJws(jwtToken);
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        }
+        Optional<Claims> optional = parseClaims(jwtToken, signKey);
+        return optional.isPresent();
     }
 
     public String buildAccessTokenWithRefreshToken(String jwtToken) {
@@ -95,13 +88,17 @@ public class JwtUtils {
                 .orElseThrow(() -> new JwtException("jwt"));
     }
 
-    public Optional<Claims> parseClaims(String jwtToken, Key signKey) {
+    public Optional<Claims> parseClaims(String accessToken) {
+        return parseClaims(accessToken, key);
+    }
+
+    public Optional<Claims> parseClaims(String accessToken, Key signKey) {
         try {
             Claims claims = Jwts
                     .parserBuilder()
                     .setSigningKey(signKey)
                     .build()
-                    .parseClaimsJws(jwtToken)
+                    .parseClaimsJws(accessToken)
                     .getBody();
             return Optional.of(claims);
         } catch (Exception e) {
@@ -111,8 +108,7 @@ public class JwtUtils {
 
     public boolean validateWithoutExpiration(String jwtToken) {
         try {
-            Jwts
-                    .parserBuilder()
+            Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(jwtToken);
@@ -126,11 +122,10 @@ public class JwtUtils {
 
     // 字符串集合
     private List<String> claimUserDetails(UserDetails userDetails) {
-        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        if (authorities == null) {
+        if (userDetails.getAuthorities() == null) {
             return null;
         }
-        return authorities
+        return userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
