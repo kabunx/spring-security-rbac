@@ -76,7 +76,7 @@
       distinct
     </if>
     <include refid="AllColumns"/>
-    from permission
+    from sys_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause"/>
     </if>
@@ -87,16 +87,16 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="AllColumns"/>
-    from permission
+    from sys_permission
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete
-    from permission
+    from sys_permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.career.work.model.PermissionExample">
-    delete from permission
+    delete from sys_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause"/>
     </if>
@@ -145,13 +145,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.career.work.model.PermissionExample" resultType="java.lang.Long">
-    select count(*) from permission
+    select count(*) from sys_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause"/>
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update permission
+    update sys_permission
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
@@ -174,7 +174,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update permission
+    update sys_permission
     set id = #{record.id,jdbcType=BIGINT},
     `name` = #{record.name,jdbcType=VARCHAR},
     description = #{record.description,jdbcType=VARCHAR},
@@ -185,7 +185,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.career.work.model.Permission">
-    update permission
+    update sys_permission
     <set>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
@@ -203,7 +203,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.career.work.model.Permission">
-    update permission
+    update sys_permission
     set `name`      = #{name,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR},
         created_at  = #{createdAt,jdbcType=TIMESTAMP},
@@ -212,22 +212,22 @@
   </update>
   <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select p.*
-    from permission p
-           inner join user_permission up on p.id = up.permission_id
+    from sys_permission p
+           inner join sys_user_permission up on p.id = up.permission_id
     where up.user_id = #{userId,jdbcType=BIGINT}
   </select>
 
   <select id="selectByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select p.*
-    from permission p
-           inner join role_permission rp
+    from sys_permission p
+           inner join sys_role_permission rp
                       on p.id = rp.permission_id
     where rp.role_id = #{roleId,jdbcType=BIGINT}
   </select>
   <select id="selectByUserIds" parameterType="java.util.List" resultMap="WithUserIdMap">
     select p.*, up.user_id user_id
-    from permission p
-           inner join user_permission up
+    from sys_permission p
+           inner join sys_user_permission up
                       on p.id = up.permission_id
     where up.user_id in #{userIds}
   </select>
@@ -237,8 +237,8 @@
   <select id="selectByRoleIds" parameterType="java.util.List" resultMap="BaseResultMap">
     select
     <include refid="AllColumns"></include>
-    from permission p
-    inner join role_permission rp on p.id = rp.permission_id
+    from sys_permission p
+    inner join sys_role_permission rp on p.id = rp.permission_id
     where rp.role_id in #{roleIds}
   </select>
 </mapper>

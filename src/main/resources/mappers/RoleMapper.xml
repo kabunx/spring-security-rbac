@@ -14,22 +14,22 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="AllColumnList"/>
-    from role
+    from sys_role
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete
-    from role
+    from sys_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.career.work.model.Role">
-    insert into role (id, `name`, description,
+    insert into sys_role (id, `name`, description,
                       created_at, updated_at)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
             #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.career.work.model.Role">
-    insert into role
+    insert into sys_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -66,7 +66,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.career.work.model.Role">
-    update role
+    update sys_role
     <set>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
@@ -84,7 +84,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.career.work.model.Role">
-    update role
+    update sys_role
     set `name`      = #{name,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR},
         created_at  = #{createdAt,jdbcType=TIMESTAMP},
@@ -94,20 +94,20 @@
   <select id="selectWithPermissionsByPrimaryKey" parameterType="java.lang.Long" resultMap="WithPermissionsMap">
     select
     <include refid="AllColumnList"/>
-    from role
+    from sys_role
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="AllColumnList"/>
-    from role r
-    inner join user_role ur on r.id = ur.role_id
+    from sys_role r
+    inner join sys_user_role ur on r.id = ur.role_id
     where ur.user_id = #{userId,jdbcType=BIGINT}
   </select>
   <select id="selectWithPermissionsByIds" parameterType="java.util.List" resultMap="WithPermissionsMap">
     select
     <include refid="AllColumnList"/>
-    from role
+    from sys_role
     where id in #{ids}
   </select>
   <resultMap id="WithPermissionsMap" type="com.career.work.model.Role" extends="BaseResultMap">

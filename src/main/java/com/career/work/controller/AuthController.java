@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public JsonResponse<String> login(@Valid @RequestBody LoginDto loginDto) {
+    public JsonResponse<Object> login(@Valid @RequestBody LoginDto loginDto) {
         return JsonResponse.success(
                 authService.login(loginDto)
         );

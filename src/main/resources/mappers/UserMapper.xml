@@ -23,28 +23,27 @@
   </resultMap>
   <sql id="AllColumnList">
     id
-    , username, email, `name`, sex, avatar, phone, `status`, `password`, password_expired_at,
+    , username, email, sex, avatar, phone, `status`, `password`, password_expired_at,
     `source`, enabled_at, expired_at, locked_at, remember_token, created_at, updated_at, 
     deleted_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="AllColumnList"/>
-    from user
+    from sys_user
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete
-    from user
+    from sys_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.career.work.model.User">
-    insert into user (id, username, email,
-                      `name`, sex, avatar,
-                      phone, `status`, `password`,
-                      password_expired_at, `source`, enabled_at,
-                      expired_at, locked_at, remember_token,
-                      created_at, updated_at, deleted_at)
+    insert into sys_user (id, username, email, sex, avatar,
+                          phone, `status`, `password`,
+                          password_expired_at, `source`, enabled_at,
+                          expired_at, locked_at, remember_token,
+                          created_at, updated_at, deleted_at)
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
             #{name,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR},
             #{phone,jdbcType=CHAR}, #{status,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
@@ -53,7 +52,7 @@
             #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{deletedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.career.work.model.User">
-    insert into user
+    insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -168,7 +167,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.career.work.model.User">
-    update user
+    update sys_user
     <set>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
@@ -225,10 +224,9 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.career.work.model.User">
-    update user
+    update sys_user
     set username            = #{username,jdbcType=VARCHAR},
         email               = #{email,jdbcType=VARCHAR},
-        `name`              = #{name,jdbcType=VARCHAR},
         sex                 = #{sex,jdbcType=TINYINT},
         avatar              = #{avatar,jdbcType=VARCHAR},
         phone               = #{phone,jdbcType=CHAR},
@@ -248,13 +246,13 @@
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="AllColumnList"/>
-    from user
+    from sys_user
     where username = #{username,jdbcType=VARCHAR}
   </select>
   <select id="selectByUsernameWithPermissions" parameterType="java.lang.String" resultMap="WithPermissionsMap">
     select
     <include refid="AllColumnList"/>
-    from user
+    from sys_user
     where username = #{username,jdbcType=VARCHAR}
   </select>
   <resultMap id="WithPermissionsMap" type="com.career.work.model.User" extends="BaseResultMap">
@@ -268,13 +266,13 @@
     />
   </resultMap>
   <insert id="insertRole">
-    insert into user_role (user_id, role_id, created_at)
-    values (#{param1.id,jdbcType=BIGINT}, #{param2.id}, jdbcType = BIGINT), #{param3,jdbcType=TIMESTAMP})
+    insert into sys_user_role (user_id, role_id)
+    values (#{param1.id,jdbcType=BIGINT}, #{param2.id,jdbcType = BIGINT)})
   </insert>
   <select id="selectByIds" parameterType="java.util.List" resultMap="BaseResultMap">
     select
     <include refid="AllColumnList"/>
-    from user
+    from sys_user
     where id in #{ids}
   </select>
 </mapper>

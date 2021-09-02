@@ -1,5 +1,6 @@
 package com.career.work.util;
 
+import com.career.work.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,13 +17,14 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
 
-    public static final String claimName = "user";
+    public static final String claimName = "user_id";
+    public static final String jti = "kabunx";
+    public static final String aud = "frontend";
+    public static final String iss = "kabunx";
 
     // 用于签名 Access Token
-    public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
-    // 用于签名 Refresh Token
-    public static final Key refreshKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public static final Key key2 = Keys.secretKeyFor(SignatureAlgorithm.valueOf("xx"));
 
     // HTTP 报头的认证字段的 key
     public static final String header = "Authorization";
@@ -38,54 +40,38 @@ public class JwtUtils {
     @Min(3600000L)
     public static final long refreshTokenExpireTime = 30 * 24 * 3600 * 1000L;
 
-    public String generateAccessToken(UserDetails userDetails) {
-        return generateAccessToken(userDetails, accessTokenExpireTime);
+    public String generateAccessToken(User user) {
+        return generateAccessToken(user, accessTokenExpireTime);
     }
 
-    public String generateAccessToken(UserDetails userDetails, long timeToExpire) {
-        return generateAccessToken(userDetails, timeToExpire, key);
+    public String generateAccessToken(User user, long timeToExpire) {
+        return generateAccessToken(user, timeToExpire, key);
     }
 
-    public String generateAccessToken(UserDetails userDetails, long timeToExpire, Key signKey) {
+    public String generateAccessToken(User user, long timeToExpire, Key signKey) {
         long now = System.currentTimeMillis();
 
         return Jwts
                 .builder()
-                .setId("kabunx")
-                .setSubject(userDetails.getUsername())
-                .claim(claimName, userDetails)
+                .setId(jti)
+                .setAudience(aud)
+                .setIssuer(iss)
+                .setSubject(user.getUsername())
+                .claim(claimName, user.getId())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + timeToExpire))
-                .signWith(signKey, SignatureAlgorithm.HS512)
+                .signWith(signKey, SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public String generateRefreshAccessToken(UserDetails userDetails) {
-        return generateAccessToken(userDetails, refreshTokenExpireTime, refreshKey);
     }
 
     public boolean validateAccessToken(String jwtToken) {
         return validateToken(jwtToken, key);
     }
 
-    public boolean validateRefreshAccessToken(String jwtToken) {
-        return validateToken(jwtToken, refreshKey);
-    }
 
     public boolean validateToken(String jwtToken, Key signKey) {
         Optional<Claims> optional = parseClaims(jwtToken, signKey);
         return optional.isPresent();
-    }
-
-    public String buildAccessTokenWithRefreshToken(String jwtToken) {
-        return parseClaims(jwtToken, refreshKey)
-                .map(claims -> Jwts
-                        .builder()
-                        .setClaims(claims)
-                        .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpireTime))
-                        .signWith(key, SignatureAlgorithm.HS512).compact()
-                )
-                .orElseThrow(() -> new JwtException("jwt"));
     }
 
     public Optional<Claims> parseClaims(String accessToken) {
