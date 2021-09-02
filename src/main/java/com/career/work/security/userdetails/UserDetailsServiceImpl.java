@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final String ROLE_PREFIX = "ROLE_";
@@ -55,15 +57,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 加载用户直属权限
         List<Permission> ups = permissionMapper.selectByUserId(user.getId());
         // 合并去重后添加到authorities
-        authorities.addAll(
-                Stream.of(rps, ups)
-                        .flatMap(Collection::stream)
-                        .distinct()
-                        .collect(Collectors.toList())
-        );
-
+        authorities.addAll(mergePermissions(ups, rps));
         user.setAuthorities(authorities);
-
         return user;
+    }
+
+    private List<Permission> mergePermissions(
+            List<Permission> uPermissions,
+            List<Permission> rPermissions
+    ) {
+        return Stream.of(uPermissions, rPermissions)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toList());
     }
 }
