@@ -50,6 +50,11 @@ public class LoginService implements UserDetailsService {
         return userMapper.selectByUsername(username);
     }
 
+    /**
+     * @param loginDto 登录信息
+     * @return 登录用户
+     * @throws WorkException 登录异常
+     */
     public User login(LoginDto loginDto) throws WorkException {
         User user = userMapper.selectByUsername(loginDto.getUsername());
         if (user == null) {
@@ -64,10 +69,14 @@ public class LoginService implements UserDetailsService {
         return user;
     }
 
+    /**
+     * 将角色角色并添加到authorities
+     * @param user 用户
+     * @return 权限
+     */
     private List<GrantedAuthority> getUserAuthorities(User user) {
-        List<Role> roles = roleMapper.selectByUserId(user.getId());
-        // 将角色角色并添加到authorities
         List<GrantedAuthority> authorities = new ArrayList<>();
+        List<Role> roles = roleMapper.selectByUserId(user.getId());
         roles.forEach(role -> {
             String roleName = role.getName();
             if (!roleName.startsWith(ROLE_PREFIX)) {
