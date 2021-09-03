@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="fatal">
     <Properties>
-        <Property name="baseDir" value="/Users/jonathan/Java/logs/work"/>
-        <!--        <Property name="baseDir" value="D:\logs\spring\job"/>-->
+<!--        <Property name="baseDir" value="/Users/jonathan/Java/logs/work"/>-->
+                <Property name="baseDir" value="D:\logs\spring\job"/>
     </Properties>
 
     <Appenders>

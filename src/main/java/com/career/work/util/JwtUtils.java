@@ -24,7 +24,6 @@ public class JwtUtils {
 
     // 用于签名 Access Token
     public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    public static final Key key2 = Keys.secretKeyFor(SignatureAlgorithm.valueOf("xx"));
 
     // HTTP 报头的认证字段的 key
     public static final String header = "Authorization";
