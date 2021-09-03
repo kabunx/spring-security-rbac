@@ -1,7 +1,7 @@
 package com.career.work.config;
 
 import com.career.work.security.filter.JwtFilter;
-import com.career.work.security.userdetails.UserDetailsServiceImpl;
+import com.career.work.service.LoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,10 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Resource
-    UserDetailsServiceImpl userDetailsService;
+    JwtFilter jwtFilter;
 
     @Resource
-    JwtFilter jwtFilter;
+    LoginService loginService;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(userDetailsService)
+        builder.userDetailsService(loginService)
                 .passwordEncoder(passwordEncoder());
     }
 }

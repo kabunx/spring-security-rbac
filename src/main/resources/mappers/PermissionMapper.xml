@@ -229,7 +229,10 @@
     from sys_permission p
            inner join sys_user_permission up
                       on p.id = up.permission_id
-    where up.user_id in #{userIds}
+    where up.user_id in
+    <foreach collection="userIds" item="userId" index="index" open="(" close=")" separator=",">
+      #{userId}
+    </foreach>
   </select>
   <resultMap id="WithUserIdMap" type="com.career.work.model.Permission" extends="BaseResultMap">
     <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -239,6 +242,9 @@
     <include refid="AllColumns"></include>
     from sys_permission p
     inner join sys_role_permission rp on p.id = rp.permission_id
-    where rp.role_id in #{roleIds}
+    where rp.role_id in
+    <foreach collection="roleIds" item="roleId" index="index" open="(" close=")" separator=",">
+      #{roleId}
+    </foreach>
   </select>
 </mapper>

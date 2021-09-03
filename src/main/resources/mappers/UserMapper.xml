@@ -267,12 +267,15 @@
   </resultMap>
   <insert id="insertRole">
     insert into sys_user_role (user_id, role_id)
-    values (#{param1.id,jdbcType=BIGINT}, #{param2.id,jdbcType = BIGINT)})
+    values (#{user.id,jdbcType=BIGINT}, #{role.id,jdbcType=BIGINT})
   </insert>
   <select id="selectByIds" parameterType="java.util.List" resultMap="BaseResultMap">
     select
     <include refid="AllColumnList"/>
     from sys_user
-    where id in #{ids}
+    where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
   </select>
 </mapper>

@@ -1,16 +1,21 @@
-package com.career.work.security.userdetails;
+package com.career.work.service;
 
+import com.career.work.exception.ExceptionEnum;
+import com.career.work.exception.WorkException;
 import com.career.work.model.Permission;
 import com.career.work.model.Role;
 import com.career.work.model.User;
 import com.career.work.model.dao.PermissionMapper;
 import com.career.work.model.dao.RoleMapper;
 import com.career.work.model.dao.UserMapper;
+import com.career.work.request.LoginDto;
+import com.career.work.util.JwtUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class LoginService implements UserDetailsService {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
@@ -34,13 +39,32 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     PermissionMapper permissionMapper;
 
+    @Resource
+    PasswordEncoder passwordEncoder;
+
+    @Resource
+    JwtUtils jwtUtils;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userMapper.selectByUsername(username);
+        return userMapper.selectByUsername(username);
+    }
+
+    public User login(LoginDto loginDto) throws WorkException {
+        User user = userMapper.selectByUsername(loginDto.getUsername());
         if (user == null) {
-            throw new UsernameNotFoundException("该用户不存在");
+            throw new WorkException(ExceptionEnum.USER_LOGIN_ERROR);
+        }
+        // 密码判断
+        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+            throw new WorkException(ExceptionEnum.USER_LOGIN_ERROR);
         }
         // 加载用户角色
+        user.setAuthorities(getUserAuthorities(user));
+        return user;
+    }
+
+    private List<GrantedAuthority> getUserAuthorities(User user) {
         List<Role> roles = roleMapper.selectByUserId(user.getId());
         // 将角色角色并添加到authorities
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -58,8 +82,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<Permission> ups = permissionMapper.selectByUserId(user.getId());
         // 合并去重后添加到authorities
         authorities.addAll(mergePermissions(ups, rps));
-        user.setAuthorities(authorities);
-        return user;
+        return authorities;
     }
 
     private List<Permission> mergePermissions(

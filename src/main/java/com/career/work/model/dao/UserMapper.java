@@ -1,12 +1,9 @@
 package com.career.work.model.dao;
 
-import com.career.work.model.Permission;
 import com.career.work.model.Role;
 import com.career.work.model.User;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface UserMapper {
@@ -16,7 +13,7 @@ public interface UserMapper {
 
     int insertSelective(User record);
 
-    int insertRole(User user, Role role, Date date);
+    int insertRole(@Param("user") User user, @Param("role") Role role);
 
     User selectByPrimaryKey(Long id);
 
@@ -29,7 +26,4 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
-
-    @Select("select ")
-    List<Permission> selectPermissions(Long id);
 }

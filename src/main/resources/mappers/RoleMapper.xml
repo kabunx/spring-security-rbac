@@ -108,7 +108,10 @@
     select
     <include refid="AllColumnList"/>
     from sys_role
-    where id in #{ids}
+    where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
   </select>
   <resultMap id="WithPermissionsMap" type="com.career.work.model.Role" extends="BaseResultMap">
     <collection
